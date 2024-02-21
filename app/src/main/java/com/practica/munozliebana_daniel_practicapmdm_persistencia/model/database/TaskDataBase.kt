@@ -1,7 +1,8 @@
-package com.practica.munozliebana_daniel_practicapmdm_persistencia.model
+package com.practica.munozliebana_daniel_practicapmdm_persistencia.model.database
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -28,7 +29,7 @@ abstract class TaskDataBase:RoomDatabase() {
         }
     }
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: TaskDataBase? = null
         fun getDatabase(context: Context): TaskDataBase {
@@ -36,7 +37,8 @@ abstract class TaskDataBase:RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context,
                     TaskDataBase::class.java,
-                    "task_database")
+                    "TaskDatabase"
+                )
                     .addCallback(DataBaseCallBack(context))
                     .build()
                 INSTANCE = instance
@@ -45,7 +47,8 @@ abstract class TaskDataBase:RoomDatabase() {
             }
 
         }
-        private suspend fun insertAsignatures(context: Context, asignatureDao: AsignatureDao){
+
+        private suspend fun insertAsignatures(context: Context, asignatureDao: AsignatureDao) {
             val asignaturasIniciales = listOf(
                 Asignature(asignaturaName = "Acceso a Datos"),
                 Asignature(asignaturaName = "Programacion de servicios"),
@@ -56,14 +59,11 @@ abstract class TaskDataBase:RoomDatabase() {
                 Asignature(asignaturaName = "Dispositivos Moviles"),
             )
             asignatureDao.insertAll(asignaturasIniciales)
+
         }
 
-        class TaskApplication: Application(){
-            val database: TaskDataBase by lazy {  getDatabase(this) }
+        class TaskApplication : Application() {
+            val database: TaskDataBase by lazy { getDatabase(this) }
         }
-
     }
-
-
-
 }

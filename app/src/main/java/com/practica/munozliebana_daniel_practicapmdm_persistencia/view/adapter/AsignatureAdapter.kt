@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.R
-import com.practica.munozliebana_daniel_practicapmdm_persistencia.databinding.AsignaturaTaskItemBinding
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.model.data.Asignature
-import kotlinx.coroutines.flow.Flow
-
 
 
 class AsignatureAdapter : ListAdapter<Asignature, AsignatureAdapter.AsignatureViewHolder>(DiffCallback()) {
@@ -23,7 +22,7 @@ class AsignatureAdapter : ListAdapter<Asignature, AsignatureAdapter.AsignatureVi
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsignatureViewHolder {
         return AsignatureViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.asignatura_task_item,
+                R.layout.asignatura_item,
                 parent,
                 false
             )
@@ -34,6 +33,13 @@ class AsignatureAdapter : ListAdapter<Asignature, AsignatureAdapter.AsignatureVi
         val asignatura = getItem(position)
         holder.itemView.apply {
             holder.textView.text = asignatura.asignaturaName
+
+            setOnClickListener {
+                val navController = Navigation.findNavController(it)
+                val bundle = bundleOf("id_asignature" to asignatura.id)
+
+                navController.navigate(R.id.todoFragment, bundle)
+            }
         }
     }
 

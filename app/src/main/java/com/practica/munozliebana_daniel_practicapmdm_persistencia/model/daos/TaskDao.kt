@@ -1,5 +1,6 @@
 package com.practica.munozliebana_daniel_practicapmdm_persistencia.model.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -18,6 +19,6 @@ interface TaskDao {
     @Update
     suspend fun updateTask(todo: Todo)
 
-    @Query("select * from task where id_asignature = :idasignature")
-    fun getAllTaskFromAsignature(idasignature: Int): Flow<List<Todo>>
+    @Query("select * from task where id_asignature = :idasignature order by titulo asc")
+    fun getAllTaskFromAsignature(idasignature: Int): LiveData<List<Todo>>
 }

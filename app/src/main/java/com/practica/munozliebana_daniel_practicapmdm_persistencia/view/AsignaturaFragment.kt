@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.databinding.FragmentAsignaturaBinding
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.view.adapter.AsignatureAdapter
-import com.practica.munozliebana_daniel_practicapmdm_persistencia.model.TaskDataBase
+import com.practica.munozliebana_daniel_practicapmdm_persistencia.model.database.TaskDataBase
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.viewmodel.TaskViewModel
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.viewmodel.TaskViewModelFactory
 
@@ -19,7 +19,8 @@ class AsignaturaFragment : Fragment() {
     private var _binding: FragmentAsignaturaBinding? = null
     private val taskViewModel: TaskViewModel by activityViewModels {
         TaskViewModelFactory(
-            (activity?.application as TaskDataBase.Companion.TaskApplication).database.asignatureDao()
+            (activity?.application as TaskDataBase.Companion.TaskApplication).database.asignatureDao(),
+            (activity?.application as TaskDataBase.Companion.TaskApplication).database.taskDao()
         )
     }
     private lateinit var asignatureAdapter: AsignatureAdapter
@@ -47,7 +48,6 @@ class AsignaturaFragment : Fragment() {
 
         rvAsignatura.adapter =   asignatureAdapter
         rvAsignatura.layoutManager = LinearLayoutManager(requireContext())
-
 
     }
 

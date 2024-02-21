@@ -18,5 +18,9 @@
         android:id="@+id/todoFragment"
         android:name="com.practica.munozliebana_daniel_practicapmdm_persistencia.view.TodoFragment"
         android:label="fragment_todo"
-        tools:layout="@layout/fragment_todo" />
+        tools:layout="@layout/fragment_todo" >
+        <argument
+            android:name="id_asignature"
+            app:argType="integer" />
+    </fragment>
 </navigation>

@@ -1,5 +1,6 @@
 package com.practica.munozliebana_daniel_practicapmdm_persistencia.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -48,7 +49,8 @@ class TaskViewModel(private val asignatureDao: AsignatureDao, private val taskDa
     }
 
     fun isEntryValid(itemViewTitle: String):Boolean{
-        if (itemViewTitle.isBlank()) return false
+
+        if (itemViewTitle.isBlank()){return false}
         return true
     }
 }

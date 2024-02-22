@@ -1,13 +1,16 @@
 package com.practica.munozliebana_daniel_practicapmdm_persistencia.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.R
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.databinding.FragmentTodoBinding
@@ -67,7 +70,15 @@ class TodoFragment : Fragment(), TaskItemClickListener {
             taskAdapter.submitList(todo)
         }
         rvTask.adapter = taskAdapter
+        setAnimationList(rvTask)
         rvTask.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    fun setAnimationList(rvTask: RecyclerView){
+        val itemAnimator = DefaultItemAnimator()
+        itemAnimator.addDuration = 800
+        itemAnimator.removeDuration = 800
+        rvTask.itemAnimator = itemAnimator
     }
 
     fun showDialog(){
@@ -83,6 +94,8 @@ class TodoFragment : Fragment(), TaskItemClickListener {
             addNewTask(bindingSheet.etTituloTask.text.toString(),
                 bindingSheet.etDescripcionTask.text.toString(),
                 idAsignature)
+            bindingSheet.etTituloTask.setText("")
+            bindingSheet.etDescripcionTask.setText("")
         }
     }
 
@@ -95,10 +108,17 @@ class TodoFragment : Fragment(), TaskItemClickListener {
     }
 
     fun isEntryValid(): Boolean{
-        return taskViewModel.isEntryValid(bindingSheet.etTituloTask.text.toString())
+        val etTitulo = bindingSheet.etTituloTask.text.toString()
+        return taskViewModel.isEntryValid(etTitulo)
+    }
+
+    fun deleteTask(task: Todo){
+        taskViewModel.deleteTask(task)
     }
 
     override fun onCheckboxClicked(task: Todo, isChecked: Boolean) {
-
+        if (isChecked){
+            deleteTask(task)
+        }
     }
 }

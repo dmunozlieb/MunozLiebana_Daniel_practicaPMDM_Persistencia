@@ -49,6 +49,7 @@ class TaskAdapter(private val itemClickListener: TaskItemClickListener) : ListAd
             holder.checkBox.setOnCheckedChangeListener{_, isChecked ->
                 toggleStrikeThrough(holder.textView, isChecked)
                 task.isChecked = !task.isChecked
+                itemClickListener.onCheckboxClicked(task,task.isChecked)
             }
         }
     }

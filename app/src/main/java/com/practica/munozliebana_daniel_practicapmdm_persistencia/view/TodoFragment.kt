@@ -1,5 +1,6 @@
 package com.practica.munozliebana_daniel_practicapmdm_persistencia.view
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ import com.practica.munozliebana_daniel_practicapmdm_persistencia.view.adapter.T
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.view.interfaces.TaskItemClickListener
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.viewmodel.TaskViewModel
 import com.practica.munozliebana_daniel_practicapmdm_persistencia.viewmodel.TaskViewModelFactory
+import java.util.Calendar
 
 
 class TodoFragment : Fragment(), TaskItemClickListener {
@@ -33,8 +35,7 @@ class TodoFragment : Fragment(), TaskItemClickListener {
             (activity?.application as TaskDataBase.Companion.TaskApplication).database.taskDao()
         )
     }
-    private val taskCheckedList: HashSet<Todo> = HashSet()
-
+    private val calendar: Calendar = Calendar.getInstance()
     private var _binding: FragmentTodoBinding? = null
     private var _bindingSheet: LayoutBottomsheetBinding? = null
     private var idAsignature: Int = 0
@@ -46,6 +47,7 @@ class TodoFragment : Fragment(), TaskItemClickListener {
         arguments?.let {
             idAsignature = it.getInt(ID_ASIGNATURE)
         }
+
     }
 
     override fun onCreateView(
@@ -72,16 +74,20 @@ class TodoFragment : Fragment(), TaskItemClickListener {
         rvTask.adapter = taskAdapter
         setAnimationList(rvTask)
         rvTask.layoutManager = LinearLayoutManager(requireContext())
+
+        bindingSheet.dateButton.setOnClickListener {
+            showDatePickerDialog()
+        }
     }
 
-    fun setAnimationList(rvTask: RecyclerView){
+    private fun setAnimationList(rvTask: RecyclerView){
         val itemAnimator = DefaultItemAnimator()
         itemAnimator.addDuration = 800
         itemAnimator.removeDuration = 800
         rvTask.itemAnimator = itemAnimator
     }
 
-    fun showDialog(){
+    private fun showDialog(){
 
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         if (bindingSheet.root.parent != null) {
@@ -93,29 +99,47 @@ class TodoFragment : Fragment(), TaskItemClickListener {
         bindingSheet.btnAddTask.setOnClickListener{
             addNewTask(bindingSheet.etTituloTask.text.toString(),
                 bindingSheet.etDescripcionTask.text.toString(),
-                idAsignature)
+                bindingSheet.txtDate.text.toString()
+                ,idAsignature)
             bindingSheet.etTituloTask.setText("")
             bindingSheet.etDescripcionTask.setText("")
         }
     }
 
-    fun addNewTask(tituloTodo:String, descripcionTodo:String, idasignatureTodo: Int){
+    fun addNewTask(tituloTodo:String, descripcionTodo:String, fechaTodo: String,idasignatureTodo: Int){
         if (isEntryValid()){
-            taskViewModel.addNewTask(tituloTodo,descripcionTodo,idasignatureTodo)
+            taskViewModel.addNewTask(tituloTodo,descripcionTodo,fechaTodo,idasignatureTodo)
         }else {
             Toast.makeText(requireContext(), "Introduzca el título", Toast.LENGTH_LONG).show()
         }
     }
 
-    fun isEntryValid(): Boolean{
+    private fun isEntryValid(): Boolean{
         val etTitulo = bindingSheet.etTituloTask.text.toString()
         return taskViewModel.isEntryValid(etTitulo)
     }
 
-    fun deleteTask(task: Todo){
+    private fun deleteTask(task: Todo){
         taskViewModel.deleteTask(task)
     }
 
+    private fun showDatePickerDialog() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                // Acciones con la fecha seleccionada, por ejemplo, actualizar un TextView
+                val selectedDate = "$dayOfMonth/${month + 1}/$year"
+                bindingSheet.txtDate.text = selectedDate
+            },
+            year, month, day
+        )
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+        datePickerDialog.show()
+    }
     override fun onCheckboxClicked(task: Todo, isChecked: Boolean) {
         if (isChecked){
             deleteTask(task)

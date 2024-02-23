@@ -17,16 +17,16 @@ class TaskViewModel(private val asignatureDao: AsignatureDao, private val taskDa
     fun getAllAsignature(): LiveData<List<Asignature>>  = asignatureDao.getAllAsignature()
     fun getAllTask(idasignature: Int): LiveData<List<Todo>> = taskDao.getAllTaskFromAsignature(idasignature)
 
-    fun addNewTask(tituloTodo:String, descripcionTodo:String, idasignatureTodo: Int){
-        val task = getNewTodo(tituloTodo,descripcionTodo,idasignatureTodo)
+    fun addNewTask(tituloTodo:String, descripcionTodo:String, fechaTodo: String ,idasignatureTodo: Int){
+        val task = getNewTodo(tituloTodo,descripcionTodo, fechaTodo,idasignatureTodo)
         insertTask(task)
     }
 
-    fun getNewTodo(tituloTodo:String, descripcionTodo:String, idasignatureTodo: Int): Todo{
+    private fun getNewTodo(tituloTodo:String, descripcionTodo:String, fechaTodo: String ,idasignatureTodo: Int): Todo{
         return Todo(
             titulo = tituloTodo,
             description = descripcionTodo,
-            dateTask = obtenerFechaActual(),
+            dateTask = fechaTodo,
             idAsignature = idasignatureTodo
         )
     }
@@ -37,15 +37,10 @@ class TaskViewModel(private val asignatureDao: AsignatureDao, private val taskDa
         }
     }
 
-    fun insertTask(task: Todo){
+    private fun insertTask(task: Todo){
         viewModelScope.launch {
             taskDao.insertTask(task)
         }
-    }
-    fun obtenerFechaActual(): String{
-        val fechaActual = LocalDate.now()
-        val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        return fechaActual.format(formato)
     }
 
     fun isEntryValid(itemViewTitle: String):Boolean{

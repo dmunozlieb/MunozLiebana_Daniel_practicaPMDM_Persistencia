@@ -5,54 +5,104 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/dialog_bg"
+    android:paddingBottom="20dp"
     >
 
     <ImageView
         android:id="@+id/imageGestor"
-        android:layout_width="104dp"
-        android:layout_height="128dp"
+        android:layout_width="88dp"
+        android:layout_height="69dp"
         android:scaleType="centerInside"
         android:src="@drawable/portapapeles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/icon_task_image"
+        app:layout_constraintBottom_toTopOf="@+id/txtInfoTarea"
+
+        />
+
+    <TextView
+        android:id="@+id/txtInfoTarea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/DarkBlue"
+        android:text="@string/info_tarea"
+        app:layout_constraintBottom_toTopOf="@+id/etTituloTask"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintTop_toBottomOf="@+id/imageGestor"
+
+        />
 
     <EditText
         android:id="@+id/etTituloTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/imageGestor"
+        android:layout_marginTop="10dp"
+        android:autofillHints="no"
+        android:ems="15"
+        android:hint="Introduzca tarea"
+        android:backgroundTint="@color/DodgerBlue"
+        android:inputType="text"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:ems="15"
-        android:layout_marginTop="20dp"
-        android:hint="Tituto"
-        android:inputType="text"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/txtInfoTarea" />
 
 
     <EditText
         android:id="@+id/etDescripcionTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/etTituloTask"
+        android:layout_marginTop="20dp"
+        android:ems="15"
+        android:hint="@string/descripcion"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:ems="15"
-        android:layout_marginTop="20dp"
-        android:hint="Descripcion"
-        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/etTituloTask" />
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintTop_toBottomOf="@+id/etDescripcionTask"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dateButton"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
         />
+
+    <ImageButton
+        android:id="@+id/dateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/get_calendar"
+        android:src="@drawable/baseline_calendar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDate"
+        app:layout_constraintTop_toBottomOf="@+id/etDescripcionTask"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/btnAddTask"
+        android:backgroundTint="@color/DodgerBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/etDescripcionTask"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp"
-        android:text="Add"
+        android:layout_marginTop="35dp"
+        android:text="@string/add"
         />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

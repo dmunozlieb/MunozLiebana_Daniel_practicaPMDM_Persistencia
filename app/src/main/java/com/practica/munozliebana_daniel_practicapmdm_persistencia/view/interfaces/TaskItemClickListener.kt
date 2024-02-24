@@ -4,4 +4,5 @@ import com.practica.munozliebana_daniel_practicapmdm_persistencia.model.data.Tod
 
 interface TaskItemClickListener {
     fun onCheckboxClicked(task: Todo, isChecked: Boolean)
+    fun showDialogUpdate(task: Todo)
 }

@@ -31,6 +31,12 @@ class TaskViewModel(private val asignatureDao: AsignatureDao, private val taskDa
         )
     }
 
+    fun updateTask(todo: Todo){
+        viewModelScope.launch {
+            taskDao.updateTask(todo)
+        }
+    }
+
     fun deleteTask(todo: Todo){
         viewModelScope.launch {
             taskDao.deleteTask(todo)
@@ -44,7 +50,6 @@ class TaskViewModel(private val asignatureDao: AsignatureDao, private val taskDa
     }
 
     fun isEntryValid(itemViewTitle: String):Boolean{
-
         if (itemViewTitle.isBlank()){return false}
         return true
     }

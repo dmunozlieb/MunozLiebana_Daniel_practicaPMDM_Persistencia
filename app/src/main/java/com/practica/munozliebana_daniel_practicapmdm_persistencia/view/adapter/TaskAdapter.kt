@@ -51,6 +51,9 @@ class TaskAdapter(private val itemClickListener: TaskItemClickListener) : ListAd
                 task.isChecked = !task.isChecked
                 itemClickListener.onCheckboxClicked(task,task.isChecked)
             }
+            setOnClickListener {
+                itemClickListener.showDialogUpdate(task)
+            }
         }
     }
 

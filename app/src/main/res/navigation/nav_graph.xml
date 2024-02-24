@@ -22,5 +22,8 @@
         <argument
             android:name="id_asignature"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_todoFragment_to_asignaturaFragment"
+            app:destination="@id/asignaturaFragment" />
     </fragment>
 </navigation>

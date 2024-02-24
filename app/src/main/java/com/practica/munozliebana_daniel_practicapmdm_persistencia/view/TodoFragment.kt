@@ -1,11 +1,13 @@
 package com.practica.munozliebana_daniel_practicapmdm_persistencia.view
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -131,7 +133,6 @@ class TodoFragment : Fragment(), TaskItemClickListener {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
-                // Acciones con la fecha seleccionada, por ejemplo, actualizar un TextView
                 val selectedDate = "$dayOfMonth/${month + 1}/$year"
                 bindingSheet.txtDate.text = selectedDate
             },
@@ -140,9 +141,39 @@ class TodoFragment : Fragment(), TaskItemClickListener {
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
         datePickerDialog.show()
     }
+    private fun updateTask(task: Todo){
+        taskViewModel.updateTask(task)
+    }
+    private fun getLayoutDialogUpdate(): View{
+        val view = layoutInflater.inflate(R.layout.update_layout, null)
+        return view
+    }
+
     override fun onCheckboxClicked(task: Todo, isChecked: Boolean) {
         if (isChecked){
             deleteTask(task)
         }
+    }
+
+    override fun showDialogUpdate(task: Todo) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.apply {
+            val viewUpdate = getLayoutDialogUpdate()
+            setView(viewUpdate)
+            setPositiveButton("Accept"){_,_->
+                val etTitle = viewUpdate.findViewById<EditText>(R.id.etUpdateTitle)
+                val etDesc = viewUpdate.findViewById<EditText>(R.id.etUpdateDescripcionTask)
+
+                if (!etTitle.text.toString().isBlank()){
+                    val newTask = task.copy(titulo = etTitle.text.toString(),
+                                                description = etDesc.text.toString())
+                    updateTask(newTask)
+                }
+            }
+            setNegativeButton("Cancel"){_,_->
+            }
+        }
+        val dialogUpdate = builder.create()
+        dialogUpdate.show()
     }
 }
